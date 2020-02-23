@@ -9,6 +9,7 @@ namespace StarWars.DataAccess.Data
 		public DbSet<Planet> Planets { get; set; }
 		public DbSet<Episode> Episodes { get; set; }
 		public DbSet<Appearance> Appearances { get; set; }
+		public DbSet<Friendship> Friendships { get; set; }
 
 		public DataContext(DbContextOptions options) : base(options)
 		{
@@ -29,6 +30,20 @@ namespace StarWars.DataAccess.Data
 				.HasOne(cf => cf.Character)
 				.WithMany(c => c.Appearances)
 				.HasForeignKey(cf => cf.CharacterId)
+				.OnDelete(DeleteBehavior.Restrict);
+
+			modelBuilder.Entity<Friendship>().HasKey(t => new { t.CharacterId, t.FriendId });
+
+			modelBuilder.Entity<Friendship>()
+				.HasOne(cf => cf.Character)
+				.WithMany(c => c.CharacterFriends)
+				.HasForeignKey(cf => cf.CharacterId)
+				.OnDelete(DeleteBehavior.Restrict);
+
+			modelBuilder.Entity<Friendship>()
+				.HasOne(cf => cf.Friend)
+				.WithMany(t => t.FriendCharacters)
+				.HasForeignKey(cf => cf.FriendId)
 				.OnDelete(DeleteBehavior.Restrict);
 		}
 	}

@@ -9,7 +9,9 @@ namespace StarWars.API.Mapper
 	{
 		public MappingProfile()
 		{
-			CreateMap<Character, CharacterViewDto>().ForMember(x => x.Episodes, opt => opt.MapFrom(z => z.Appearances.Select(a => a.Episode)));
+			CreateMap<Character, CharacterViewDto>()
+				.ForMember(x => x.Friends, opt => opt.MapFrom(z => z.Friends.Select(a => a.Friend.Id == z.Id ? a.Character : a.Friend)))
+				.ForMember(x => x.Episodes, opt => opt.MapFrom(z => z.Appearances.Select(a => a.Episode)));
 			CreateMap<Character, CharacterInfoDto>();
 			CreateMap<CharacterDto, Character>();
 
@@ -19,6 +21,9 @@ namespace StarWars.API.Mapper
 			CreateMap<NewEpisodeDto, Episode>();
 			CreateMap<Episode, EpisodeInfoDto>();
 			CreateMap<Episode, AppearanceCharacterDto>();
+
+			CreateMap<Friendship, FriendshipInfoDto>();
+			CreateMap<Character, FriendDto>();
 		}
 	}
 }

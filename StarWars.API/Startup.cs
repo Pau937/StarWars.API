@@ -38,6 +38,7 @@ namespace StarWars.API
 			services.AddScoped<ICharacterService, CharacterService>();
 			services.AddScoped<IPlanetService, PlanetService>();
 			services.AddScoped<IEpisodeService, EpisodeService>();
+			services.AddScoped<IFriendshipService, FriendshipService>();
 			services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 			services.AddSwaggerGen(c =>
 			{
