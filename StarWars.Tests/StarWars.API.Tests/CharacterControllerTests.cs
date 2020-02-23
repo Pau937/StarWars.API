@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using StarWars.API.Controllers;
-using StarWars.Core.Models;
+using StarWars.API.Dtos;
+using StarWars.API.Mapper;
 using Xunit;
 
 namespace StarWars.Tests.StarWars.API.Tests
@@ -8,9 +10,9 @@ namespace StarWars.Tests.StarWars.API.Tests
 	public class CharacterControllerTests
 	{
 		[Fact]
-		public void GetCharacter_Should_Return_Character_By_Given_Id()
+		public void GetCharacter_Should_Return_CharacterViewDto()
 		{
-			var controller = new CharacterController();
+			var controller = new CharacterController(_mapper);
 
 			var result = controller.GetCharacter(5).Result;			
 
@@ -18,7 +20,19 @@ namespace StarWars.Tests.StarWars.API.Tests
 
 			var character = result as OkObjectResult;
 
-			Assert.NotNull(character.Value);
+			Assert.IsType<CharacterViewDto>(character.Value);
 		}
+
+		public CharacterControllerTests()
+		{
+			var mockMapper = new MapperConfiguration(cfg =>
+			{
+				cfg.AddProfile(new MappingProfile());
+			});
+
+			_mapper = mockMapper.CreateMapper();
+		}
+
+		private readonly IMapper _mapper;
 	}
 }
