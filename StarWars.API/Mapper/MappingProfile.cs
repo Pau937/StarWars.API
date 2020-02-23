@@ -11,6 +11,9 @@ namespace StarWars.API.Mapper
 			CreateMap<Character, CharacterViewDto>();
 			CreateMap<Character, CharacterInfoDto>();
 			CreateMap<CharacterDto, Character>();
+
+			CreateMap<NewPlanetDto, Planet>();
+			CreateMap<Planet, PlanetDto>();
 		}
 	}
 }

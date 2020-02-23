@@ -1,5 +1,6 @@
 ﻿using StarWars.Core.Interfaces;
 using StarWars.Core.Models;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,7 +10,7 @@ namespace StarWars.Core.Services
 	{
 		public async Task<Character> GetByIdAsync(int id)
 		{
-			return await _characterRepository.GetByIdAsync(id);
+			return await _characterRepository.GetByIdAsync(id, new List<string> { "Planet" });
 		}
 
 		public async Task<Character> AddAsync(Character model)
@@ -29,7 +30,21 @@ namespace StarWars.Core.Services
 
 		public IQueryable<Character> GetAll()
 		{
-			return _characterRepository.GetAll();
+			return _characterRepository.GetAll(new List<string> { "Planet" });
+		}
+
+		public async Task AddPlanetToCharacter(Character character, Planet planet)
+		{
+			character.Planet = planet;
+
+			await _characterRepository.UpdateAsync(character);
+		}
+
+		public async Task RemovePlanetFromCharacter(Character character)
+		{
+			character.Planet = null;
+
+			await _characterRepository.UpdateAsync(character);
 		}
 
 		public CharacterService(IAsyncRepository<Character> characterRepository)

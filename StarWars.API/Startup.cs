@@ -36,6 +36,7 @@ namespace StarWars.API
 			services.AddSingleton(mapper);
 			services.AddScoped(typeof(IAsyncRepository<>), typeof(EFCoreRepository<>));
 			services.AddScoped<ICharacterService, CharacterService>();
+			services.AddScoped<IPlanetService, PlanetService>();
 			services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 			services.AddSwaggerGen(c =>
 			{

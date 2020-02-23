@@ -11,5 +11,7 @@ namespace StarWars.Core.Interfaces
 		Task<Character> UpdateAsync(Character model);
 		Task RemoveAsync(Character model);
 		IQueryable<Character> GetAll();
+		Task AddPlanetToCharacter(Character character, Planet planet);
+		Task RemovePlanetFromCharacter(Character character);
 	}
 }

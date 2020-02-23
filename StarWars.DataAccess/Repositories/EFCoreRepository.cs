@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StarWars.Core.Interfaces;
 using StarWars.DataAccess.Data;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -38,6 +39,22 @@ namespace StarWars.DataAccess.Repositories
 		public IQueryable<T> GetAll()
 		{
 			return _dbContext.Set<T>().AsQueryable();
+		}
+
+		public IQueryable<T> GetAll(IEnumerable<string> includes)
+		{
+			var query = _dbContext.Set<T>().AsQueryable();
+			query = includes.Aggregate(query, (current, include) => current.Include(include));
+
+			return query;
+		}
+
+		public async Task<T> GetByIdAsync(int id, IEnumerable<string> includes)
+		{
+			var query = _dbContext.Set<T>().AsQueryable();
+			query = includes.Aggregate(query, (current, include) => current.Include(include));
+
+			return await Task.Run(() => query.ToList().FirstOrDefault(x => x.Id == id));
 		}
 
 		public EFCoreRepository(DataContext dbContext)
