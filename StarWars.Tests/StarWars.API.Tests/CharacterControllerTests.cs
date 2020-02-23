@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Moq;
 using StarWars.API.Controllers;
 using StarWars.API.Dtos;
 using StarWars.API.Mapper;
+using StarWars.Core.Interfaces;
+using StarWars.Core.Models;
 using Xunit;
 
 namespace StarWars.Tests.StarWars.API.Tests
@@ -10,17 +13,22 @@ namespace StarWars.Tests.StarWars.API.Tests
 	public class CharacterControllerTests
 	{
 		[Fact]
-		public void GetCharacter_Should_Return_CharacterViewDto()
+		public void GetCharacter_Should_Return_OkResultObject_And_CharacterViewDto_Value_If_Character_Exists_In_Database()
 		{
-			var controller = new CharacterController(_mapper);
+			var characterService = new Mock<ICharacterService>();
 
-			var result = controller.GetCharacter(5).Result;			
+			characterService.Setup(x => x.GetByIdAsync(It.IsAny<int>())).ReturnsAsync(() => new Character { });
 
+			var controller = new CharacterController(_mapper, characterService.Object);
+
+			var result = controller.GetCharacter(It.IsAny<int>()).Result;
+
+			Assert.NotNull(result);
 			Assert.IsType<OkObjectResult>(result);
 
-			var character = result as OkObjectResult;
+			var okObject = result as OkObjectResult;
 
-			Assert.IsType<CharacterViewDto>(character.Value);
+			Assert.IsType<CharacterViewDto>(okObject.Value);
 		}
 
 		public CharacterControllerTests()

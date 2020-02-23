@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using StarWars.API.Mapper;
+using StarWars.Core.Interfaces;
+using StarWars.Core.Services;
 
 namespace StarWars.API
 {
@@ -29,6 +31,7 @@ namespace StarWars.API
 
 			services.AddControllers();
 			services.AddSingleton(mapper);
+			services.AddScoped<ICharacterService, CharacterService>();
 			services.AddSwaggerGen(c =>
 			{
 				c.SwaggerDoc("v1", new OpenApiInfo

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using StarWars.API.Dtos;
-using StarWars.Core.Models;
+using StarWars.Core.Interfaces;
 using System.Threading.Tasks;
 
 namespace StarWars.API.Controllers
@@ -13,10 +13,7 @@ namespace StarWars.API.Controllers
 		[HttpGet("{id}")]
 		public async Task<IActionResult> GetCharacter(int id)
 		{
-			var character = await Task.Run(() => new Character
-			{
-				Id = id
-			});
+			var character = await _characterService.GetByIdAsync(id);
 
 			if (character == null) return NotFound(CHARACTER_CANNOT_BE_FOUND_MESSAGE);
 
@@ -25,12 +22,14 @@ namespace StarWars.API.Controllers
 			return Ok(characterDto);
 		}
 
-		public CharacterController(IMapper mapper)
+		public CharacterController(IMapper mapper, ICharacterService characterService)
 		{
 			_mapper = mapper;
+			_characterService = characterService;
 		}
 
 		private readonly IMapper _mapper;
+		private readonly ICharacterService _characterService;
 		private const string CHARACTER_CANNOT_BE_FOUND_MESSAGE = "The character with given id cannot be found in database.";
 	}
 }
