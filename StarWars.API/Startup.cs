@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -8,6 +9,8 @@ using Microsoft.OpenApi.Models;
 using StarWars.API.Mapper;
 using StarWars.Core.Interfaces;
 using StarWars.Core.Services;
+using StarWars.DataAccess.Data;
+using StarWars.DataAccess.Repositories;
 
 namespace StarWars.API
 {
@@ -31,7 +34,9 @@ namespace StarWars.API
 
 			services.AddControllers();
 			services.AddSingleton(mapper);
+			services.AddScoped(typeof(IAsyncRepository<>), typeof(EFCoreRepository<>));
 			services.AddScoped<ICharacterService, CharacterService>();
+			services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 			services.AddSwaggerGen(c =>
 			{
 				c.SwaggerDoc("v1", new OpenApiInfo

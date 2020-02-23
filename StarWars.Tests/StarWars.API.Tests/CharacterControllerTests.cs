@@ -15,11 +15,9 @@ namespace StarWars.Tests.StarWars.API.Tests
 		[Fact]
 		public void GetCharacter_Should_Return_OkResultObject_And_CharacterViewDto_Value_If_Character_Exists_In_Database()
 		{
-			var characterService = new Mock<ICharacterService>();
+			_characterServiceMock.Setup(x => x.GetByIdAsync(It.IsAny<int>())).ReturnsAsync(() => new Character { });
 
-			characterService.Setup(x => x.GetByIdAsync(It.IsAny<int>())).ReturnsAsync(() => new Character { });
-
-			var controller = new CharacterController(_mapper, characterService.Object);
+			var controller = new CharacterController(_mapper, _characterServiceMock.Object);
 
 			var result = controller.GetCharacter(It.IsAny<int>()).Result;
 
@@ -31,6 +29,18 @@ namespace StarWars.Tests.StarWars.API.Tests
 			Assert.IsType<CharacterViewDto>(okObject.Value);
 		}
 
+		[Fact]
+		public void GetCharacter_Should_Return_NotFoundObjectResult_If_Character_Not_Exists_In_Database()
+		{
+			_characterServiceMock.Setup(x => x.GetByIdAsync(It.IsAny<int>())).ReturnsAsync(() => null);
+
+			var controller = new CharacterController(_mapper, _characterServiceMock.Object);
+
+			var result = controller.GetCharacter(It.IsAny<int>()).Result;
+
+			Assert.IsType<NotFoundObjectResult>(result);
+		}
+
 		public CharacterControllerTests()
 		{
 			var mockMapper = new MapperConfiguration(cfg =>
@@ -39,8 +49,11 @@ namespace StarWars.Tests.StarWars.API.Tests
 			});
 
 			_mapper = mockMapper.CreateMapper();
+
+			_characterServiceMock = new Mock<ICharacterService>();
 		}
 
 		private readonly IMapper _mapper;
+		private Mock<ICharacterService> _characterServiceMock;
 	}
 }

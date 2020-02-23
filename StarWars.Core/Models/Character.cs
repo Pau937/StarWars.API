@@ -1,7 +1,8 @@
-﻿namespace StarWars.Core.Models
+﻿using StarWars.Core.Interfaces;
+
+namespace StarWars.Core.Models
 {
-	public class Character
+	public class Character : BaseEntity
 	{
-		public int Id { get; set; }
 	}
 }

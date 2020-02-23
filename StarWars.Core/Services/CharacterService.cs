@@ -8,10 +8,14 @@ namespace StarWars.Core.Services
 	{
 		public async Task<Character> GetByIdAsync(int id)
 		{
-			return await Task.Run(() => new Character
-			{
-				Id = id
-			});
+			return await _characterRepository.GetByIdAsync(id);
 		}
+
+		public CharacterService(IAsyncRepository<Character> characterRepository)
+		{
+			_characterRepository = characterRepository;
+		}
+
+		private readonly IAsyncRepository<Character> _characterRepository;
 	}
 }
