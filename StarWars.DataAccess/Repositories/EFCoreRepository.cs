@@ -12,6 +12,14 @@ namespace StarWars.DataAccess.Repositories
 			return await _dbContext.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
 		}
 
+		public async Task<T> AddAsync(T item)
+		{
+			await _dbContext.Set<T>().AddAsync(item);
+			await _dbContext.SaveChangesAsync();
+
+			return item;
+		}
+
 		public EFCoreRepository(DataContext dbContext)
 		{
 			_dbContext = dbContext;

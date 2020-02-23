@@ -11,6 +11,11 @@ namespace StarWars.Core.Services
 			return await _characterRepository.GetByIdAsync(id);
 		}
 
+		public async Task<Character> AddAsync(Character model)
+		{
+			return await _characterRepository.AddAsync(model);
+		}
+
 		public CharacterService(IAsyncRepository<Character> characterRepository)
 		{
 			_characterRepository = characterRepository;

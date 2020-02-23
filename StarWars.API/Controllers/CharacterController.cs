@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using StarWars.API.Dtos;
+using StarWars.API.Filters;
 using StarWars.Core.Interfaces;
+using StarWars.Core.Models;
 using System.Threading.Tasks;
 
 namespace StarWars.API.Controllers
@@ -20,6 +22,19 @@ namespace StarWars.API.Controllers
 			var characterDto = _mapper.Map<CharacterViewDto>(character);
 
 			return Ok(characterDto);
+		}
+
+		[HttpPost]
+		[ValidateModelFilter]
+		public async Task<IActionResult> AddCharacter(CharacterDto characterDto)
+		{
+			Character character = new Character();
+
+			_mapper.Map(characterDto, character);
+
+			var createdCharacter = await _characterService.AddAsync(character);
+
+			return Created($"localhost:5000/api/character/{createdCharacter.Id}", _mapper.Map<CharacterInfoDto>(createdCharacter));
 		}
 
 		public CharacterController(IMapper mapper, ICharacterService characterService)

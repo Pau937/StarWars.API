@@ -9,6 +9,8 @@ namespace StarWars.API.Mapper
 		public MappingProfile()
 		{
 			CreateMap<Character, CharacterViewDto>();
+			CreateMap<Character, CharacterInfoDto>();
+			CreateMap<CharacterDto, Character>();
 		}
 	}
 }
