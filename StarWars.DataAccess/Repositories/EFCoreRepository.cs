@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StarWars.Core.Interfaces;
 using StarWars.DataAccess.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -55,6 +56,11 @@ namespace StarWars.DataAccess.Repositories
 			query = includes.Aggregate(query, (current, include) => current.Include(include));
 
 			return await Task.Run(() => query.ToList().FirstOrDefault(x => x.Id == id));
+		}
+
+		public async Task<T> GetByCompositeIdAsync(Tuple<int, int> ids)
+		{
+			return await _dbContext.Set<T>().FindAsync(ids.Item1, ids.Item2);
 		}
 
 		public EFCoreRepository(DataContext dbContext)

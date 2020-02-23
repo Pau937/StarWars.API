@@ -1,17 +1,15 @@
 ﻿using StarWars.Core.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace StarWars.Core.Models
 {
-	public class Character : BaseEntity
+	public class Episode : BaseEntity
 	{
 		public List<Appearance> Appearances { get; set; }
-		public Planet Planet { get; set; }
+		public DateTime? Date { get; set; }
 		[Required]
-		public string Name { get; set; }
-		[Required]
-		public int Age { get; set; }
-		public string Description { get; set; }
+		public string Name { get; set; }		
 	}
 }

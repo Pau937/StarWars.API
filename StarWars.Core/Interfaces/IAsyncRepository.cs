@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,5 +14,6 @@ namespace StarWars.Core.Interfaces
 		IQueryable<T> GetAll();
 		IQueryable<T> GetAll(IEnumerable<string> includes);
 		Task<T> GetByIdAsync(int id, IEnumerable<string> includes);
+		Task<T> GetByCompositeIdAsync(Tuple<int, int> ids);
 	}
 }

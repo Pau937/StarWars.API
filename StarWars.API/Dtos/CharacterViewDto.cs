@@ -1,7 +1,10 @@
-﻿namespace StarWars.API.Dtos
+﻿using System.Collections.Generic;
+
+namespace StarWars.API.Dtos
 {
 	public class CharacterViewDto
 	{
+		public IEnumerable<AppearanceCharacterDto> Episodes { get; set; }
 		public PlanetDto Planet { get; set; }
 		public string Name { get; set; }
 		public int Age { get; set; }

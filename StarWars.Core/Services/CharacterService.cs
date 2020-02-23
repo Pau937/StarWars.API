@@ -10,7 +10,7 @@ namespace StarWars.Core.Services
 	{
 		public async Task<Character> GetByIdAsync(int id)
 		{
-			return await _characterRepository.GetByIdAsync(id, new List<string> { "Planet" });
+			return await _characterRepository.GetByIdAsync(id, new List<string> { "Planet", "Appearances", "Appearances.Episode", "Appearances.Character" });
 		}
 
 		public async Task<Character> AddAsync(Character model)
@@ -30,7 +30,7 @@ namespace StarWars.Core.Services
 
 		public IQueryable<Character> GetAll()
 		{
-			return _characterRepository.GetAll(new List<string> { "Planet" });
+			return _characterRepository.GetAll(new List<string> { "Planet", "Appearances", "Appearances.Episode", "Appearances.Character" });
 		}
 
 		public async Task AddPlanetToCharacter(Character character, Planet planet)
