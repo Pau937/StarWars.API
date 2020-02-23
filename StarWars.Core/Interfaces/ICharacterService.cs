@@ -1,4 +1,5 @@
 ﻿using StarWars.Core.Models;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace StarWars.Core.Interfaces
@@ -7,5 +8,8 @@ namespace StarWars.Core.Interfaces
 	{
 		Task<Character> GetByIdAsync(int id);
 		Task<Character> AddAsync(Character model);
+		Task<Character> UpdateAsync(Character model);
+		Task RemoveAsync(Character model);
+		IQueryable<Character> GetAll();
 	}
 }

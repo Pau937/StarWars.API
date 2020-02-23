@@ -9,6 +9,6 @@ namespace StarWars.API.Dtos
 		public string Name { get; set; }
 		public string Description { get; set; }
 		[Required]
-		public int Age { get; set; }
+		public int? Age { get; set; }
 	}
 }

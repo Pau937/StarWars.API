@@ -1,5 +1,6 @@
 ﻿using StarWars.Core.Interfaces;
 using StarWars.Core.Models;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace StarWars.Core.Services
@@ -14,6 +15,21 @@ namespace StarWars.Core.Services
 		public async Task<Character> AddAsync(Character model)
 		{
 			return await _characterRepository.AddAsync(model);
+		}
+
+		public async Task<Character> UpdateAsync(Character model)
+		{
+			return await _characterRepository.UpdateAsync(model);
+		}
+
+		public async Task RemoveAsync(Character model)
+		{
+			await _characterRepository.RemoveAsync(model);
+		}
+
+		public IQueryable<Character> GetAll()
+		{
+			return _characterRepository.GetAll();
 		}
 
 		public CharacterService(IAsyncRepository<Character> characterRepository)

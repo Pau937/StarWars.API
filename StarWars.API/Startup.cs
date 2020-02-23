@@ -46,6 +46,11 @@ namespace StarWars.API
 					Description = "Manage your characters now!",
 				});
 			});
+
+			services.AddMvc()
+			 .AddJsonOptions(options => {
+				 options.JsonSerializerOptions.IgnoreNullValues = true;
+			 });
 		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
