@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\StarWars.API\StarWars.API.csproj" />
+    <ProjectReference Include="..\StarWars.Core\StarWars.Core.csproj" />
   </ItemGroup>
 
 </Project>
