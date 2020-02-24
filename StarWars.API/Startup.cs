@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using StarWars.API.Mapper;
 using StarWars.Core.Interfaces;
+using StarWars.Core.Models;
 using StarWars.Core.Services;
 using StarWars.DataAccess.Data;
 using StarWars.DataAccess.Repositories;
@@ -35,6 +36,7 @@ namespace StarWars.API
 			services.AddControllers();
 			services.AddSingleton(mapper);
 			services.AddScoped(typeof(IAsyncRepository<>), typeof(EFCoreRepository<>));
+			services.AddScoped<IAsyncRepository<Character>, CharacterRepository>(); 
 			services.AddScoped<ICharacterService, CharacterService>();
 			services.AddScoped<IPlanetService, PlanetService>();
 			services.AddScoped<IEpisodeService, EpisodeService>();

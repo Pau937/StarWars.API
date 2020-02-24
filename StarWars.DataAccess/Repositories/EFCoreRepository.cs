@@ -10,7 +10,7 @@ namespace StarWars.DataAccess.Repositories
 {
 	public class EFCoreRepository<T> : IAsyncRepository<T> where T : BaseEntity
 	{
-		public async Task<T> GetByIdAsync(int id)
+		public virtual async Task<T> GetByIdAsync(int id)
 		{
 			return await _dbContext.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
 		}
@@ -37,25 +37,9 @@ namespace StarWars.DataAccess.Repositories
 			return item;
 		}
 
-		public IQueryable<T> GetAll()
+		public virtual async Task<IEnumerable<T>> GetAllAsync(int skipElements, int takeElements)
 		{
-			return _dbContext.Set<T>().AsQueryable();
-		}
-
-		public IQueryable<T> GetAll(IEnumerable<string> includes)
-		{
-			var query = _dbContext.Set<T>().AsQueryable();
-			query = includes.Aggregate(query, (current, include) => current.Include(include));
-
-			return query;
-		}
-
-		public async Task<T> GetByIdAsync(int id, IEnumerable<string> includes)
-		{
-			var query = _dbContext.Set<T>().AsQueryable();
-			query = includes.Aggregate(query, (current, include) => current.Include(include));
-
-			return await Task.Run(() => query.ToList().FirstOrDefault(x => x.Id == id));
+			return await _dbContext.Set<T>().Skip(skipElements).Take(takeElements).ToListAsync();
 		}
 
 		public async Task<T> GetByCompositeIdAsync(Tuple<int, int> ids)
@@ -68,6 +52,6 @@ namespace StarWars.DataAccess.Repositories
 			_dbContext = dbContext;
 		}
 
-		private readonly DataContext _dbContext;
+		protected readonly DataContext _dbContext;
 	}
 }

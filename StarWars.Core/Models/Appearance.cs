@@ -10,6 +10,6 @@ namespace StarWars.Core.Models
 		public int EpisodeId { get; set; }
 		public int CharacterId { get; set; }
 		[NotMapped]
-		public override int Id { get; protected set; }
+		public override int Id { get; set; }
 	}
 }

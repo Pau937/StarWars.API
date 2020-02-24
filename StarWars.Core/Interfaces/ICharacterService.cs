@@ -1,5 +1,5 @@
 ﻿using StarWars.Core.Models;
-using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace StarWars.Core.Interfaces
@@ -10,7 +10,7 @@ namespace StarWars.Core.Interfaces
 		Task<Character> AddAsync(Character model);
 		Task<Character> UpdateAsync(Character model);
 		Task RemoveAsync(Character model);
-		IQueryable<Character> GetAll();
+		Task<IEnumerable<Character>> GetAll(int skipElements, int takeElements);
 		Task AddPlanetToCharacter(Character character, Planet planet);
 		Task RemovePlanetFromCharacter(Character character);
 	}
