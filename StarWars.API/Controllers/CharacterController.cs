@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StarWars.API.Dtos;
 using StarWars.API.Filters;
@@ -55,6 +56,7 @@ namespace StarWars.API.Controllers
 		}
 
 		[HttpDelete("{id}")]
+		[Authorize]
 		public async Task<IActionResult> DeleteCharacter(int id)
 		{
 			var character = await _characterService.GetByIdAsync(id);

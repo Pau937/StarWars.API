@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StarWars.Core.Models;
+using StarWars.Core.Models.Authentication;
 using System;
 
 namespace StarWars.DataAccess.Data
@@ -11,6 +12,7 @@ namespace StarWars.DataAccess.Data
 		public DbSet<Episode> Episodes { get; set; }
 		public DbSet<Appearance> Appearances { get; set; }
 		public DbSet<Friendship> Friendships { get; set; }
+		public DbSet<User> Users { get; set; }
 
 		public DataContext(DbContextOptions options) : base(options)
 		{

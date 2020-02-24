@@ -25,7 +25,7 @@ namespace StarWars.API.Controllers
 
             var createdFriendship = await _friendshipService.MakeFriendship(firstModel, secondModel);
 
-            return Created("Unavailable", _mapper.Map<FriendshipInfoDto>(createdFriendship));
+            return Created(string.Empty, _mapper.Map<FriendshipInfoDto>(createdFriendship));
         }
 
         [HttpDelete]

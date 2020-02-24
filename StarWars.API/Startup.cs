@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
@@ -7,14 +8,17 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using StarWars.API.Mapper;
 using StarWars.Core.Interfaces;
+using StarWars.Core.Interfaces.Authentication;
 using StarWars.Core.Models;
 using StarWars.Core.Services;
 using StarWars.DataAccess.Data;
 using StarWars.DataAccess.Repositories;
 using System.Net;
+using System.Text;
 
 namespace StarWars.API
 {
@@ -44,7 +48,17 @@ namespace StarWars.API
 			services.AddScoped<IPlanetService, PlanetService>();
 			services.AddScoped<IEpisodeService, EpisodeService>();
 			services.AddScoped<IFriendshipService, FriendshipService>();
+			services.AddScoped<IAuthenticationService, AuthenticationService>();
 			services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+				.AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters
+				{
+					ValidateIssuerSigningKey = true,
+					IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:SecretToken").Value)),
+					ValidateIssuer = false,
+					ValidateAudience = false
+				});
+
 			services.AddSwaggerGen(c =>
 			{
 				c.SwaggerDoc("v1", new OpenApiInfo
@@ -85,6 +99,9 @@ namespace StarWars.API
 			app.UseHttpsRedirection();
 
 			app.UseRouting();
+
+			app.UseAuthentication();
+			app.UseAuthorization();
 
 			app.UseEndpoints(endpoints =>
 			{

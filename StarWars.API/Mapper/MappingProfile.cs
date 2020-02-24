@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using StarWars.API.Dtos;
+using StarWars.API.Dtos.Authentication;
 using StarWars.Core.Models;
+using StarWars.Core.Models.Authentication;
 using System.Linq;
 
 namespace StarWars.API.Mapper
@@ -24,6 +26,8 @@ namespace StarWars.API.Mapper
 
 			CreateMap<Friendship, FriendshipInfoDto>();
 			CreateMap<Character, FriendDto>();
+
+			CreateMap<User, UserInfoDto>();
 		}
 	}
 }

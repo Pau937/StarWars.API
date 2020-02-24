@@ -47,6 +47,13 @@ namespace StarWars.DataAccess.Repositories
 			return await _dbContext.Set<T>().FindAsync(ids.Item1, ids.Item2);
 		}
 
+		public T GetByPropertyName(string propertyName, string value)
+		{
+			Func<T, bool> searchByPropertyName = (x) => x.GetType().GetProperty(propertyName).GetValue(x, null).ToString().ToLower() == value.ToLower();
+
+			return _dbContext.Set<T>().FirstOrDefault(searchByPropertyName);
+		}
+
 		public EFCoreRepository(DataContext dbContext)
 		{
 			_dbContext = dbContext;

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StarWars.API.Dtos;
 using StarWars.API.Filters;
@@ -10,6 +11,7 @@ namespace StarWars.API.Controllers
 {
 	[ApiController]
 	[Route("api/[controller]")]
+	[Authorize]
 	public class EpisodeController : ControllerBase
 	{
 		[HttpPost]
