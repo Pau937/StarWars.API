@@ -10,9 +10,7 @@ namespace StarWars.Core.Interfaces
 		Task<T> AddAsync(T item);
 		Task RemoveAsync(T item);
 		Task<T> UpdateAsync(T item);
-		Task<IEnumerable<T>> GetAll(int skipElements, int takeElements);
-		Task<IEnumerable<T>> GetAll(IEnumerable<string> includes);
-		Task<T> GetByIdAsync(int id, IEnumerable<string> includes);
+		Task<IEnumerable<T>> GetAllAsync(int skipElements, int takeElements);
 		Task<T> GetByCompositeIdAsync(Tuple<int, int> ids);
 	}
 }

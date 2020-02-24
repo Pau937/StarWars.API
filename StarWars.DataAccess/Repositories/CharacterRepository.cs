@@ -13,7 +13,7 @@ namespace StarWars.DataAccess.Repositories
 		{
 		}
 
-		public override async Task<IEnumerable<Character>> GetAll(int skipElements, int takeElements)
+		public override async Task<IEnumerable<Character>> GetAllAsync(int skipElements, int takeElements)
 		{
 			var characters = await _dbContext.Characters.Include(x => x.CharacterFriends).Include(x => x.FriendCharacters)
 				.Include(x => x.Planet).Include(x => x.Appearances).ThenInclude(x => x.Episode).Skip(skipElements).Take(takeElements).ToListAsync();

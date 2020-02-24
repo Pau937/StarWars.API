@@ -67,13 +67,11 @@ namespace StarWars.API.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> GetCharacters(int? pageNumber, int? pageSize)
+		public async Task<IActionResult> GetCharacters(int? pageNumber = 1, int? pageSize = 100)
 		{
-			var characters = await _characterService.GetAll(pageNumber.HasValue ? (pageNumber.Value - 1) * pageSize ?? 10 : 0, pageSize ?? 10);
+			var characters = await _characterService.GetAll((pageNumber.Value - 1) * pageSize.Value, pageSize.Value);
 
 			if (!characters.Any()) return NoContent();
-
-			//var characterPaginated = await PaginatedList<Character>.CreatePaginatedListAsync(characters, 1, 1);
 
 			var characterDtos = _mapper.Map<List<CharacterViewDto>>(characters);
 

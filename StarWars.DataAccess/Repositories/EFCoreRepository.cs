@@ -37,25 +37,9 @@ namespace StarWars.DataAccess.Repositories
 			return item;
 		}
 
-		public virtual async Task<IEnumerable<T>> GetAll(int skipElements, int takeElements)
+		public virtual async Task<IEnumerable<T>> GetAllAsync(int skipElements, int takeElements)
 		{
 			return await _dbContext.Set<T>().Skip(skipElements).Take(takeElements).ToListAsync();
-		}
-
-		public async Task<IEnumerable<T>> GetAll(IEnumerable<string> includes)
-		{
-			var query = _dbContext.Set<T>().AsQueryable();
-			query = includes.Aggregate(query, (current, include) => current.Include(include));
-
-			return await query.ToListAsync();
-		}
-
-		public async Task<T> GetByIdAsync(int id, IEnumerable<string> includes)
-		{
-			var query = _dbContext.Set<T>().AsQueryable();
-			query = includes.Aggregate(query, (current, include) => current.Include(include));
-
-			return await query.FirstOrDefaultAsync(x => x.Id == id);
 		}
 
 		public async Task<T> GetByCompositeIdAsync(Tuple<int, int> ids)

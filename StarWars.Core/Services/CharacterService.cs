@@ -29,7 +29,7 @@ namespace StarWars.Core.Services
 
 		public async Task<IEnumerable<Character>> GetAll(int skipElements, int takeElements)
 		{
-			return await _characterRepository.GetAll(skipElements, takeElements);
+			return await _characterRepository.GetAllAsync(skipElements, takeElements);
 		}
 
 		public async Task AddPlanetToCharacter(Character character, Planet planet)
