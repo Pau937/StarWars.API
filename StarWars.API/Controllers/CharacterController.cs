@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using StarWars.API.Dtos;
 using StarWars.API.Filters;
-using StarWars.API.Pagination;
 using StarWars.Core.Interfaces;
 using StarWars.Core.Models;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -67,15 +67,15 @@ namespace StarWars.API.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> GetCharacters(PaginationParameters paginationParams)
+		public async Task<IActionResult> GetCharacters(int? pageNumber, int? pageSize)
 		{
-			var characters = _characterService.GetAll();
+			var characters = await _characterService.GetAll(pageNumber.HasValue ? (pageNumber.Value - 1) * pageSize ?? 10 : 0, pageSize ?? 10);
 
 			if (!characters.Any()) return NoContent();
 
-			var characterPaginated = await PaginatedList<Character>.CreatePaginatedListAsync(characters, paginationParams.PageNumber, paginationParams.PageSize);
+			//var characterPaginated = await PaginatedList<Character>.CreatePaginatedListAsync(characters, 1, 1);
 
-			var characterDtos = characterPaginated.Select(x => _mapper.Map<CharacterViewDto>(x));
+			var characterDtos = _mapper.Map<List<CharacterViewDto>>(characters);
 
 			return Ok(characterDtos);
 		}
