@@ -31,6 +31,14 @@ namespace StarWars.API
 
 		public IConfiguration Configuration { get; }
 
+		public void ConfigureTestingServices(IServiceCollection services)
+		{
+			services.AddDbContext<DataContext>(options =>
+				options.UseInMemoryDatabase("DatabaseInMemoryForFunctionalTests"));
+
+			ConfigureServices(services);
+		}
+
 		public void ConfigureServices(IServiceCollection services)
 		{
 			var mappingConfig = new MapperConfiguration(conf =>
