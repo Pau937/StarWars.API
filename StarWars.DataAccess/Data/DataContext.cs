@@ -21,33 +21,7 @@ namespace StarWars.DataAccess.Data
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			modelBuilder.Entity<Appearance>().HasKey(c => new { c.EpisodeId, c.CharacterId });
-
-			modelBuilder.Entity<Appearance>()
-				.HasOne(cf => cf.Episode)
-				.WithMany(t => t.Appearances)
-				.HasForeignKey(cf => cf.EpisodeId)
-				.OnDelete(DeleteBehavior.Cascade);
-
-			modelBuilder.Entity<Appearance>()
-				.HasOne(cf => cf.Character)
-				.WithMany(c => c.Appearances)
-				.HasForeignKey(cf => cf.CharacterId)
-				.OnDelete(DeleteBehavior.Cascade);
-
-			modelBuilder.Entity<Friendship>().HasKey(t => new { t.CharacterId, t.FriendId });
-
-			modelBuilder.Entity<Friendship>()
-				.HasOne(cf => cf.Character)
-				.WithMany(c => c.CharacterFriends)
-				.HasForeignKey(cf => cf.CharacterId)
-				.OnDelete(DeleteBehavior.Restrict);
-
-			modelBuilder.Entity<Friendship>()
-				.HasOne(cf => cf.Friend)
-				.WithMany(t => t.FriendCharacters)
-				.HasForeignKey(cf => cf.FriendId)
-				.OnDelete(DeleteBehavior.Restrict);
+			ConfigureRelations(modelBuilder);
 
 			modelBuilder.Entity<Planet>().HasData(
 				new Planet { Id = 1, Description = "Capital planet of the Corellian system", Name = "Corellia" },
@@ -86,6 +60,37 @@ namespace StarWars.DataAccess.Data
 				new { FriendId = 4, CharacterId = 5 },
 				new { FriendId = 5, CharacterId = 6 },
 				new { FriendId = 6, CharacterId = 4 });
+		}
+
+		protected void ConfigureRelations(ModelBuilder modelBuilder)
+		{
+			modelBuilder.Entity<Appearance>().HasKey(c => new { c.EpisodeId, c.CharacterId });
+
+			modelBuilder.Entity<Appearance>()
+				.HasOne(cf => cf.Episode)
+				.WithMany(t => t.Appearances)
+				.HasForeignKey(cf => cf.EpisodeId)
+				.OnDelete(DeleteBehavior.Cascade);
+
+			modelBuilder.Entity<Appearance>()
+				.HasOne(cf => cf.Character)
+				.WithMany(c => c.Appearances)
+				.HasForeignKey(cf => cf.CharacterId)
+				.OnDelete(DeleteBehavior.Cascade);
+
+			modelBuilder.Entity<Friendship>().HasKey(t => new { t.CharacterId, t.FriendId });
+
+			modelBuilder.Entity<Friendship>()
+				.HasOne(cf => cf.Character)
+				.WithMany(c => c.CharacterFriends)
+				.HasForeignKey(cf => cf.CharacterId)
+				.OnDelete(DeleteBehavior.Restrict);
+
+			modelBuilder.Entity<Friendship>()
+				.HasOne(cf => cf.Friend)
+				.WithMany(t => t.FriendCharacters)
+				.HasForeignKey(cf => cf.FriendId)
+				.OnDelete(DeleteBehavior.Restrict);
 		}
 	}
 }
