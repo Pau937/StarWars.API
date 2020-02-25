@@ -10,7 +10,25 @@ namespace StarWars.Core.Models
 		public List<Friendship> CharacterFriends { get; set; }
 		public List<Friendship> FriendCharacters { get; set; }
 		[NotMapped]
-		public List<Friendship> Friends { get; set; }
+		public List<Friendship> Friends
+		{
+			get
+			{
+				var list = new List<Friendship>();
+
+				if (CharacterFriends != null)
+				{
+					list.AddRange(CharacterFriends);
+				}
+
+				if (FriendCharacters != null)
+				{
+					list.AddRange(FriendCharacters);
+				}
+
+				return list;
+			}
+		}
 		public List<Appearance> Appearances { get; set; }
 		public Planet Planet { get; set; }
 		[Required]
@@ -21,7 +39,7 @@ namespace StarWars.Core.Models
 
 		public Character()
 		{
-			Friends = new List<Friendship>();
+			//Friends = new List<Friendship>();
 		}
 	}
 }
