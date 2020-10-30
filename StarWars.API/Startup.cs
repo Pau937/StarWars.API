@@ -24,7 +24,6 @@ namespace StarWars.API
 {
     public class Startup
     {
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -46,8 +45,6 @@ namespace StarWars.API
             {
                 conf.AddProfile(new MappingProfile());
             });
-
-
 
             IMapper mapper = mappingConfig.CreateMapper();
 
