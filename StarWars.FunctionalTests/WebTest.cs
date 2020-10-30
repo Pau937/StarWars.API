@@ -31,6 +31,7 @@ namespace StarWars.FunctionalTests
 				{
 					var scopedServices = scope.ServiceProvider;
 					var db = scopedServices.GetRequiredService<DataContext>();
+
 					db.Database.EnsureCreated();
 				}
 			});

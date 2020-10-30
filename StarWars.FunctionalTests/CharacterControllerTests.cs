@@ -40,7 +40,7 @@ namespace StarWars.FunctionalTests
 		[Fact]
 		public void AddCharacter_Should_Return_CharacterViewDto_Model_With_Id_Not_Equal_Zero()
 		{
-			string serailizeddto = JsonConvert.SerializeObject(new CharacterDto
+			string serailizedDto = JsonConvert.SerializeObject(new CharacterDto
 			{
 				Age = 55,
 				Name = "Obi-Wan"
@@ -48,7 +48,7 @@ namespace StarWars.FunctionalTests
 
 			var inputMessage = new HttpRequestMessage
 			{
-				Content = new StringContent(serailizeddto, Encoding.UTF8, "application/json")
+				Content = new StringContent(serailizedDto, Encoding.UTF8, "application/json")
 			};
 
 			var response = Client.PostAsync("/api/character", inputMessage.Content).Result;
