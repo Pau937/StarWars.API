@@ -47,6 +47,8 @@ namespace StarWars.API
                 conf.AddProfile(new MappingProfile());
             });
 
+
+
             IMapper mapper = mappingConfig.CreateMapper();
 
             services.AddControllers();
