@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using StarWars.API.Mapper;
+using StarWars.API.Middleware;
 using StarWars.Core.Interfaces;
 using StarWars.Core.Interfaces.Authentication;
 using StarWars.Core.Models;
@@ -67,9 +68,9 @@ namespace StarWars.API
                     ValidateAudience = false
                 });
 
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(swgOptions =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo
+                swgOptions.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
                     Title = "StarWars.API",
@@ -77,11 +78,10 @@ namespace StarWars.API
                 });
             });
 
-            services.AddMvc()
-             .AddJsonOptions(options =>
-             {
-                 options.JsonSerializerOptions.IgnoreNullValues = true;
-             });
+            services.AddMvc().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.IgnoreNullValues = true;
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -103,22 +103,19 @@ namespace StarWars.API
                         await context.Response.WriteAsync(error.Error.Message);
                     }
                 }));
+
+                app.UseHttpsRedirection();
             }
-
-            app.UseHttpsRedirection();
-
+            
+            app.UseMiddleware<ForbiddenBrowsersMiddleware>();
             app.UseRouting();
-
             app.UseAuthentication();
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
-
             app.UseSwagger();
-
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "StarWars.API");
